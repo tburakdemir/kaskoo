@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface IVehicleService {
 
-    String getVehicleByModel(String model);
+    String getVehicleByModelCode(int modelCode);
 
-    List<Vehicle> getVehicleByBrandAndModel(String brand, String model);
+    List<Vehicle> getVehicleByBrandAndModelCode(int brandCode, int modelCode);
 
     void saveVehicle(VehicleSaveRequestDto vehicleSaveRequestDto);
 
