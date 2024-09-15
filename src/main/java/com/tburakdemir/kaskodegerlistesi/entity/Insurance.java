@@ -11,18 +11,23 @@ public class Insurance {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "year", length = 4)
+    @Column
+    private int brandCode;
+
+    @Column
+    private int modelCode;
+
+    @Column
+    private int modelYear;
+
+    @Column
     private int year;
 
-    @Column(name = "month", length= 2)
+    @Column
     private int month;
 
-    @ManyToOne(targetEntity = Vehicle.class)
-    @JoinColumn(name = "vehicle_model_id")
-    private Vehicle vehicle;
-
-    @Column(name = "try_price")
-    private BigDecimal price;
+    @Column
+    private BigDecimal tlPrice;
 
     public Long getId() {
         return id;
@@ -30,6 +35,30 @@ public class Insurance {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getBrandCode() {
+        return brandCode;
+    }
+
+    public void setBrandCode(int brandCode) {
+        this.brandCode = brandCode;
+    }
+
+    public int getModelCode() {
+        return modelCode;
+    }
+
+    public void setModelCode(int modelCode) {
+        this.modelCode = modelCode;
+    }
+
+    public int getModelYear() {
+        return modelYear;
+    }
+
+    public void setModelYear(int modelYear) {
+        this.modelYear = modelYear;
     }
 
     public int getYear() {
@@ -48,19 +77,11 @@ public class Insurance {
         this.month = month;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public BigDecimal getTlPrice() {
+        return tlPrice;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setTlPrice(BigDecimal tlPrice) {
+        this.tlPrice = tlPrice;
     }
 }

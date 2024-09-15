@@ -4,6 +4,7 @@ import com.tburakdemir.kaskodegerlistesi.dto.VehicleSaveRequestDto;
 import com.tburakdemir.kaskodegerlistesi.entity.Vehicle;
 import com.tburakdemir.kaskodegerlistesi.mapper.VehicleMapper;
 import com.tburakdemir.kaskodegerlistesi.repository.VehicleRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,10 +32,13 @@ public class VehicleService implements IVehicleService{
     @Override
     public void saveVehicle(VehicleSaveRequestDto vehicleSaveRequestDto){
 
-        logger.info("VehicleService.saveVehicle() method is called");
-        Vehicle vehicle = vehicleRepository.save(VehicleMapper.toEntity(vehicleSaveRequestDto));
-        logger.info("VehicleService.saveVehicle() method is finished");
-        logger.info("VehicleService.saveVehicle() method is finished" + vehicle.getId() + vehicle.getModel());
+        try{
+            vehicleRepository.save(VehicleMapper.toEntity(vehicleSaveRequestDto));
+        }catch (DataIntegrityViolationException e) {
+            logger.warning("Vehicle already exists");
+            e.printStackTrace();
+        }
+
     }
 
 

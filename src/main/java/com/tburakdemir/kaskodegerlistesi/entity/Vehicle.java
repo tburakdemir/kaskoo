@@ -2,12 +2,12 @@ package com.tburakdemir.kaskodegerlistesi.entity;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ExecutorService;
-
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"brand_code", "model_code", "year"})
+        }
+)
 public class Vehicle {
 
     @Id

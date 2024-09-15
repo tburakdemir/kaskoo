@@ -1,15 +1,38 @@
 package com.tburakdemir.kaskodegerlistesi.dto;
 
-import com.tburakdemir.kaskodegerlistesi.entity.Vehicle;
-
 import java.math.BigDecimal;
 
 public class InsuranceSaveRequestDto {
-
+    private int brandCode;
+    private int modelCode;
+    private int modelYear;
     private int month;
     private int year;
-    private Vehicle vehicle;
-    private BigDecimal price;
+    private BigDecimal tlPrice;
+
+    public int getBrandCode() {
+        return brandCode;
+    }
+
+    public void setBrandCode(int brandCode) {
+        this.brandCode = brandCode;
+    }
+
+    public int getModelCode() {
+        return modelCode;
+    }
+
+    public void setModelCode(int modelCode) {
+        this.modelCode = modelCode;
+    }
+
+    public int getModelYear() {
+        return modelYear;
+    }
+
+    public void setModelYear(int modelYear) {
+        this.modelYear = modelYear;
+    }
 
     public int getMonth() {
         return month;
@@ -27,19 +50,11 @@ public class InsuranceSaveRequestDto {
         this.year = year;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public BigDecimal getTlPrice() {
+        return tlPrice;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setTlPrice(BigDecimal tlPrice) {
+        this.tlPrice = tlPrice;
     }
 }
