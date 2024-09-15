@@ -6,7 +6,7 @@ import com.tburakdemir.kaskodegerlistesi.service.InsuranceService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/insurance")
+@RequestMapping("/insurances")
 public class InsuranceController {
 
     private final InsuranceService insuranceService;

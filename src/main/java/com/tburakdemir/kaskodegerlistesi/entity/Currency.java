@@ -2,10 +2,12 @@ package com.tburakdemir.kaskodegerlistesi.entity;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 
 import java.math.BigDecimal;
 @Entity
+@Data
 public class Currency {
 
     @Id

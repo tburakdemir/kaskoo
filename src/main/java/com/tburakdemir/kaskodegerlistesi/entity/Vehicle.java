@@ -2,8 +2,10 @@ package com.tburakdemir.kaskodegerlistesi.entity;
 
 import jakarta.persistence.*;
 
-
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ExecutorService;
 
 @Entity
 public class Vehicle {
@@ -23,7 +25,6 @@ public class Vehicle {
 
     @OneToMany(mappedBy = "vehicle", targetEntity = Insurance.class)
     List<Insurance> valueByMonthList;
-
 
     public Long getId() {
         return id;
@@ -63,5 +64,16 @@ public class Vehicle {
 
     public void setValueByMonthList(List<Insurance> valueByMonthList) {
         this.valueByMonthList = valueByMonthList;
+    }
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "id=" + id +
+                ", year=" + year +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", valueByMonthList=" + valueByMonthList +
+                '}';
     }
 }
