@@ -15,6 +15,12 @@ public class Vehicle {
     private Long id;
 
     @Column
+    private int brandCode;
+
+    @Column
+    private int modelCode;
+
+    @Column
     private int year;
 
     @Column
@@ -23,8 +29,22 @@ public class Vehicle {
     @Column
     private String model;
 
-    @OneToMany(mappedBy = "vehicle", targetEntity = Insurance.class)
-    List<Insurance> valueByMonthList;
+    public int getBrandCode() {
+        return brandCode;
+    }
+
+    public void setBrandCode(int brandCode) {
+        this.brandCode = brandCode;
+    }
+
+    public int getModelCode() {
+        return modelCode;
+    }
+
+    public void setModelCode(int modelCode) {
+        this.modelCode = modelCode;
+    }
+
 
     public Long getId() {
         return id;
@@ -58,14 +78,6 @@ public class Vehicle {
         this.model = model;
     }
 
-    public List<Insurance> getValueByMonthList() {
-        return valueByMonthList;
-    }
-
-    public void setValueByMonthList(List<Insurance> valueByMonthList) {
-        this.valueByMonthList = valueByMonthList;
-    }
-
     @Override
     public String toString() {
         return "Vehicle{" +
@@ -73,7 +85,6 @@ public class Vehicle {
                 ", year=" + year +
                 ", brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
-                ", valueByMonthList=" + valueByMonthList +
                 '}';
     }
 }

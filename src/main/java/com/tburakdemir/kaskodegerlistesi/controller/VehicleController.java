@@ -16,14 +16,14 @@ public class VehicleController {
     public VehicleController(VehicleService vehicleService  ) {
         this.vehicleService = vehicleService;
     }
-    @GetMapping("/{id}")
-    public String getVehicle(@PathVariable String model ){
-        return this.vehicleService.getVehicleByModel(model);
+    @GetMapping("/{modelCode}")
+    public String getVehicle(@PathVariable int modelCode ){
+        return this.vehicleService.getVehicleByModelCode(modelCode);
     }
 
     @GetMapping("/{brand}/{model}")
-    public ArrayList<Vehicle> getVehicle(@PathVariable String brand, @PathVariable String model ){
-        return this.vehicleService.getVehicleByBrandAndModel(brand, model);
+    public ArrayList<Vehicle> getVehicle(@PathVariable int brandCode, @PathVariable int modelCode ){
+        return this.vehicleService.getVehicleByBrandAndModelCode(brandCode, modelCode);
     }
 
     @PostMapping()

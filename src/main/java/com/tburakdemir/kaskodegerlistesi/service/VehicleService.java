@@ -19,13 +19,13 @@ public class VehicleService implements IVehicleService{
         this.vehicleRepository = vehicleRepository;
     }
     @Override
-    public String getVehicleByModel(String id){
-        return vehicleRepository.findByModel(id).toString();
+    public String getVehicleByModelCode(int modelCode){
+        return vehicleRepository.findByModelCode(modelCode).toString();
     }
 
     @Override
-    public ArrayList<Vehicle> getVehicleByBrandAndModel(String brand, String model){
-        return vehicleRepository.findByBrandAndModel(brand, model);
+    public ArrayList<Vehicle> getVehicleByBrandAndModelCode(int brandCode, int modelCode){
+        return vehicleRepository.findByBrandAndModelCode(brandCode, modelCode);
     }
 
     @Override

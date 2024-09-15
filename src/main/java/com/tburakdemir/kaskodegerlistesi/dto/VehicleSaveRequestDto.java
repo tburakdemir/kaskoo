@@ -1,9 +1,20 @@
 package com.tburakdemir.kaskodegerlistesi.dto;
 
 public class VehicleSaveRequestDto {
+
+    private int brandCode;
+    private int modelCode;
     private int year;
     private String brand;
     private String model;
+
+    public int getBrandCode() {return brandCode;}
+
+    public void setBrandCode(int brandCode) {this.brandCode = brandCode;}
+
+    public int getModelCode() {return modelCode;}
+
+    public void setModelCode(int modelCode) {this.modelCode = modelCode;}
 
     public int getYear() {
         return year;
