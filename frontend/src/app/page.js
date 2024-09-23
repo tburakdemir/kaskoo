@@ -1,101 +1,207 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+import { FormControl, InputLabel, Select, MenuItem, Box } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import Chart from "react-apexcharts";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [year, setYear] = useState("2011");
+  const [brand, setBrand] = useState({ brand: "", brandCode: "" });
+  const [brands, setBrands] = useState([]);
+  const [model, setModel] = useState({ model: "", modelCode: "" });
+  const [models, setModels] = useState([]);
+  const [insuranceList, setInsuranceList] = useState([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const [chart, setChart] = useState({
+    options: {
+      chart: {
+        id: "apexchart-example",
+      },
+      xaxis: {
+        categories: insuranceList.map(
+          (item) => `${item.year}-${item.month.toString().padStart(2, "0")}`
+        ),
+      },
+    },
+    series: [
+      {
+        name: "series-1",
+        data: insuranceList.map((item) => item.tlPrice),
+      },
+    ],
+  });
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 15 }, (_, index) =>
+    (currentYear - index).toString()
+  );
+
+  const handleYearChange = (e) => {
+    setYear(e.target.value);
+    setBrand({ brand: "", brandCode: "" });
+    setModel({ model: "", modelCode: "" });
+    fetchBrands(year);
+  };
+
+  const fetchBrands = async (year) => {
+    const response = await fetch(
+      `http://localhost:8080/api/vehicles/brands?year=${year}`
+    );
+    const data = await response.json();
+    setBrands(data);
+  };
+
+  const handleBrandChange = (e) => {
+    const selectedBrand = brands.find((b) => b.brand === e.target.value);
+    setBrand(selectedBrand);
+    setModel({ model: "", modelCode: "" });
+    fetchModels(selectedBrand.brandCode, year);
+  };
+
+  const fetchModels = async (brandCode, year) => {
+    const response = await fetch(
+      `http://localhost:8080/api/vehicles/models?brandCode=${brandCode}&year=${year}`
+    );
+    const data = await response.json();
+    setModels(data);
+  };
+
+  const handleModelChange = (e) => {
+    const selectedModel = models.find((m) => m.model === e.target.value);
+    setModel(selectedModel);
+    fetchInsuranceList(selectedModel.modelCode, year);
+  };
+
+  const fetchInsuranceList = async (modelCode, year) => {
+    const response = await fetch(
+      `http://localhost:8080/api/insurances/${brand.brandCode}/${modelCode}/${year}`
+    );
+    const data = await response.json();
+    data.sort((a, b) => {
+      return new Date(a.year, a.month) - new Date(b.year, b.month);
+    });
+    setInsuranceList(data);
+    setChart({
+      options: {
+        ...chart.options,
+        xaxis: {
+          categories: data.map(
+            (item) => `${item.year}-${item.month.toString().padStart(2, "0")}`
+          ),
+          tickPlacement: "on",
+          type: "x",
+        },
+      },
+      series: [
+        {
+          name: "series-1",
+          data: data.map((item) => item.tlPrice),
+        },
+      ],
+    });
+  };
+
+  return (
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        padding: 4,
+      }}
+    >
+      <Grid container spacing={4}>
+        {/* Left side: Dropdown lists */}
+        <Grid item xs={12} md={4}>
+          <Box
+            sx={{
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
+              borderRadius: 2,
+              padding: 3,
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel id="year-label">Year</InputLabel>
+              <Select
+                labelId="year-label"
+                value={year}
+                label="Year"
+                onChange={handleYearChange}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {years.map((y) => (
+                  <MenuItem key={y} value={y}>
+                    {y}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel id="brand-label">Brand</InputLabel>
+              <Select
+                labelId="brand-label"
+                value={brand.brand}
+                label="Brand"
+                onChange={handleBrandChange}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {brands.map((b) => (
+                  <MenuItem key={b.brandCode} value={b.brand}>
+                    {b.brand}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth>
+              <InputLabel id="model-label">Model</InputLabel>
+              <Select
+                labelId="model-label"
+                value={model.model}
+                label="Model"
+                onChange={handleModelChange}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {models.map((m) => (
+                  <MenuItem key={m.modelCode} value={m.model}>
+                    {m.model}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </Grid>
+
+        {/* Right side: Line Chart */}
+        <Grid item xs={12} md={8}>
+          <Box
+            sx={{
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
+              borderRadius: 2,
+              padding: 3,
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+              height: "100%",
+            }}
+          >
+            <Chart
+              options={chart.options}
+              series={chart.series}
+              type="line"
+              width={1000}
+              height={320}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
