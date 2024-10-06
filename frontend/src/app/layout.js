@@ -1,4 +1,5 @@
 import "./globals.css";
+import { ThemeProvider } from "next-themes";
 
 export const metadata = {
   title: "Create Next App",
@@ -8,7 +9,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`antialiased`}>{children}</body>
+      <body>
+        <ThemeProvider attribute="class">{children}</ThemeProvider>
+      </body>
     </html>
   );
 }
