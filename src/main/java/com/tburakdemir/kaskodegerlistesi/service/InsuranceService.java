@@ -36,4 +36,11 @@ public class InsuranceService implements IInsuranceService {
                 .map(obj -> Map.of("tlPrice", obj[0], "month", obj[1], "year", obj[2]))
                 .collect(Collectors.toList());
     }
+
+    public List<Map<String, Object>> getInsuranceByBrandCodeAndModelCodeAndYearWithCurrency(int brandCode, int modelCode, int year) {
+        return insuranceRepository.findByBrandCodeAndModelCodeAndYearWithCurrency(brandCode, modelCode, year).stream()
+                .map(obj -> Map.of("brandCode", obj[0], "modelCode", obj[1], "modelYear", obj[2], "year", obj[3], "month", obj[4], "tlPrice", obj[5], "minWageTry", obj[6], "usdTry", obj[7], "xauTryg", obj[8]))
+                .collect(Collectors.toList());
+    }
 }
+

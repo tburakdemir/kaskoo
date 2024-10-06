@@ -20,14 +20,14 @@ public class ArchiveRW {
 
    public static void main(String[] args){
 
-       String excelFilePath = "C:\\Users\\Burak\\IdeaProjects\\kaskoo\\src\\main\\resources\\archives\\202409R1.xlsx";
-       ArchiveRW archiveRW = new ArchiveRW();
+      // String excelFilePath = "C:\\Users\\Burak\\IdeaProjects\\kaskoo\\src\\main\\resources\\archives\\202409R1.xlsx";
+      // ArchiveRW archiveRW = new ArchiveRW();
       //  archiveRW.postVehicleReqWithArchiveFile(excelFilePath);
       // archiveRW.postInsuranceReqWithArchiveFile();
       // Get all files in the archives folder
-      File folder = new File("C:\\Users\\Burak\\IdeaProjects\\kaskoo\\src\\main\\resources\\archives");
-      File[] listOfFiles = folder.listFiles();
-      //archiveRW.postInsuranceReqWithArchiveFiles(listOfFiles);
+      // File folder = new File("C:\\Users\\Burak\\IdeaProjects\\kaskoo\\src\\main\\resources\\archives");
+      // File[] listOfFiles = folder.listFiles();
+      // archiveRW.postInsuranceReqWithArchiveFiles(listOfFiles);
 
 
    }

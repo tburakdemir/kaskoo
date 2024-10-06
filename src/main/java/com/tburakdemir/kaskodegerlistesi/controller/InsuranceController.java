@@ -34,4 +34,9 @@ public class InsuranceController {
         return insuranceService.getInsuranceByBrandCodeAndModelCodeAndYear(brandCode, modelCode, year);
     }
 
+    @GetMapping("/with-currencies/{brandCode}/{modelCode}/{year}")
+    public List<Map<String, Object>> getInsuranceWithCurrencies(@PathVariable int brandCode, @PathVariable int modelCode, @PathVariable int year) {
+        return insuranceService.getInsuranceByBrandCodeAndModelCodeAndYearWithCurrency(brandCode, modelCode, year);
+    }
+
 }
